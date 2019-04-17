@@ -26,7 +26,6 @@
               "src/styles.css"
             ],
             "scripts": [
-              "src/scripts/hello.js"
             ],
             "es5BrowserSupport": true
           },
@@ -85,7 +84,6 @@
               "src/styles.css"
             ],
             "scripts": [
-              "src/scripts/hello.js"
             ],
             "assets": [
               "src/favicon.ico",
