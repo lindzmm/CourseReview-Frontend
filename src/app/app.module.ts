@@ -7,11 +7,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatTableModule } from '@angular/material';
 import {CoursesComponent} from './courses/courses.component';
 import {HttpClientModule} from '@angular/common/http';
+import { ReviewsComponent } from './reviews/reviews.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CoursesComponent
+    CoursesComponent,
+    ReviewsComponent
   ],
   imports: [
     BrowserModule,

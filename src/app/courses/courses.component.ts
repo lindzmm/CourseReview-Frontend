@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CourseService } from '../services/course.service';
+import { Router} from '@angular/router';
 
 
 @Component({
@@ -12,9 +13,12 @@ export class CoursesComponent implements OnInit {
   dataSource  = [];
   responseArray: string;
   courseList = new Array<Course>();
+  selectedCourse: Course;
+  display = 'none';
 
 
-  constructor(private courseService: CourseService) { }
+  constructor(private courseService: CourseService,
+              private router: Router) { }
 
   ngOnInit() {
     this.fetchCourses();
@@ -23,21 +27,19 @@ export class CoursesComponent implements OnInit {
   fetchCourses() {
     this.courseService.getFirstPage().subscribe((data: Array<object>) => {
       this.dataSource  =  data;
-      console.log(data);
       this.responseArray = JSON.stringify(data);
-      console.log('the string is' + this.responseArray);
       const obj: MyObj = JSON.parse(this.responseArray);
-      console.log('the number is ' + obj.results.length);
       for (const i of obj.results) {
         const courseObj: string = JSON.stringify(i);
         const course: Course = JSON.parse(courseObj);
-        console.log(course.course_name);
-        console.log(course.department);
-        console.log(course.url);
         this.courseList.push(course);
-        console.log('length is ' + this.courseList.length);
       }
     });
+  }
+  onSelect(course: Course): void {
+    this.selectedCourse = course;
+    console.log('selected course is ' + this.selectedCourse.course_name);
+    this.router.navigate(['/courses', this.selectedCourse.id]);
   }
 }
 
