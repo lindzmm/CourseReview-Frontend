@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ReviewService } from '../services/review.service';
+import { CourseService} from '../services/course.service';
 import { ActivatedRoute} from '@angular/router';
 
 @Component({
@@ -12,32 +13,44 @@ export class ReviewsComponent implements OnInit {
   dataSource  = [];
   responseArray: string;
   reviewList = new Array<Review>();
+  courseId: number;
 
   constructor(private reviewService: ReviewService,
+              private courseService: CourseService,
               private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      console.log(params);
-      console.log(params.id);
-    })
+      this.courseId = params.id;
+    });
     this.fetchReviews();
   }
 
   fetchReviews() {
-    this.reviewService.getFirstPage().subscribe((data: Array<object>) => {
+    this.courseService.getSpecificCourse(this.courseId).subscribe((data: Array<object>) => {
+      console.log('we got here');
+      this.dataSource = data;
+      this.responseArray = JSON.stringify(data);
+      const obj: MyObj = JSON.parse(this.responseArray);
+      const courseObj: string = JSON.stringify(obj);
+      const course: Course = JSON.parse(courseObj);
+      for (const i of course.course_reviews) {
+        const reviewURL: string = JSON.stringify(i);
+        console.log('this review url here is ' + reviewURL);
+        this.fetchReviewDetails(reviewURL);
+      }
+    });
+  }
+  fetchReviewDetails(url) {
+    this.reviewService.getFirstPage(url).subscribe((data: Array<object>) => {
       this.dataSource  =  data;
       console.log(data);
       this.responseArray = JSON.stringify(data);
-      const obj: MyObj = JSON.parse(this.responseArray);
-      for (const i of obj.results) {
-        const reviewObj: string = JSON.stringify(i);
-        const review: Review = JSON.parse(reviewObj);
-        this.reviewList.push(review);
-        console.log(review.course);
-        console.log(review.review_text);
-        console.log(review.rating);
-      }
+      const review: Review = JSON.parse(this.responseArray);
+      console.log(review.course);
+      console.log(review.review_text);
+      console.log(review.rating);
+      this.reviewList.push(review);
     });
   }
 }

@@ -1,3 +1,8 @@
-<p>
-  reviews works!
-</p>
+<html>
+<ul class="reviews">
+  <li *ngFor="let review of reviewList">
+    <p> Rating: {{review.rating}}<br> Review: {{review.review_text}}</p>
+  </li>
+  <p *ngIf="reviewList.length < 1"> There are no reviews yet </p>
+</ul>
+</html>

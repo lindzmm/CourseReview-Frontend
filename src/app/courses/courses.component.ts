@@ -14,6 +14,7 @@ export class CoursesComponent implements OnInit {
   responseArray: string;
   courseList = new Array<Course>();
   selectedCourse: Course;
+  display = 'none';
 
 
   constructor(private courseService: CourseService,
