@@ -8,12 +8,17 @@ import { MatInputModule, MatButtonModule, MatCardModule, MatFormFieldModule, Mat
 import {CoursesComponent} from './courses/courses.component';
 import {HttpClientModule} from '@angular/common/http';
 import { ReviewsComponent } from './reviews/reviews.component';
+import { AddCourseComponent } from './add-course/add-course.component';
+import {MatDialogModule} from '@angular/material/dialog';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
     CoursesComponent,
-    ReviewsComponent
+    ReviewsComponent,
+    AddCourseComponent
   ],
   imports: [
     BrowserModule,
@@ -24,9 +29,16 @@ import { ReviewsComponent } from './reviews/reviews.component';
     MatInputModule,
     MatFormFieldModule,
     MatButtonModule,
-    HttpClientModule
+    HttpClientModule,
+    MatDialogModule,
+    NgbModule,
+    FormsModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+  ],
+  bootstrap: [AppComponent],
+  entryComponents: [
+    AddCourseComponent
+  ]
 })
 export class AppModule { }
