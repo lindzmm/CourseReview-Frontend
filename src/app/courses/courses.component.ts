@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, OnChanges, SimpleChanges} from '@angular/core';
 import { CourseService } from '../services/course.service';
 import { Router} from '@angular/router';
+import { MatDialog } from '@angular/material';
+import { AddCourseComponent } from '../add-course/add-course.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -9,18 +12,21 @@ import { Router} from '@angular/router';
   styleUrls: ['./courses.component.css']
 })
 
-export class CoursesComponent implements OnInit {
+export class CoursesComponent implements OnInit, OnChanges {
   dataSource  = [];
   responseArray: string;
   courseList = new Array<Course>();
   selectedCourse: Course;
-  display = 'none';
 
 
   constructor(private courseService: CourseService,
-              private router: Router) { }
+              private router: Router,
+              private modalService: NgbModal) { }
 
   ngOnInit() {
+    this.fetchCourses();
+  }
+  ngOnChanges(changes: SimpleChanges) {
     this.fetchCourses();
   }
 
@@ -41,6 +47,16 @@ export class CoursesComponent implements OnInit {
     console.log('selected course is ' + this.selectedCourse.course_name);
     this.router.navigate(['/courses', this.selectedCourse.id]);
   }
+  onButtonClick(): void {
+    const modalRef = this.modalService.open(AddCourseComponent);
+
+    modalRef.result.then((result) => {
+      console.log(result);
+      window.location.reload();
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
 }
 
 interface MyObj {
@@ -49,5 +65,7 @@ interface MyObj {
   previous: string;
   results: Array<string>;
 }
+
+
 
 

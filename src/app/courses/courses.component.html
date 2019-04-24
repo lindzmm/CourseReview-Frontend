@@ -1,6 +1,7 @@
-
 <ul class="courses">
   <li *ngFor="let course of courseList" (click)="onSelect(course)">
     <span class="badge">{{course.department}}</span> <a [routerLink]="['/courses', course.id]"> {{course.course_name}} </a>
   </li>
 </ul>
+<button type="button" class="btn btn-med btn-outline-primary" (click)="onButtonClick()">Add a new course</button>
+
