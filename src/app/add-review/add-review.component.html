@@ -1,3 +1,29 @@
-<p>
-  add-review works!
-</p>
+<div class="modal-header">
+  <h4 class="modal-title">Add a Review</h4>
+  <button type="button" class="close" aria-label="Close"
+          (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form (ngSubmit)="onSubmit(addCourseForm)" #addCourseForm="ngForm" >
+    <input type="hidden" name="_token" value="">
+    <div class="form-group">
+      <label class="control-label">Rating</label>
+      <div>
+        <input class="form-control input-med" type="number" ngModel id="rating" name="rating" value="">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label">Review</label>
+      <div>
+        <input class="form-control input-lg" ngModel id="review_text" name="review_text">
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-lg btn-outline-primary" (click)="onSubmit(addCourseForm)">
+    Add Review
+  </button>
+</div>

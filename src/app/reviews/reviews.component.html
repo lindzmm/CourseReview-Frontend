@@ -1,8 +1,10 @@
 <html>
+<h2>{{ courseName }}</h2>
 <ul class="reviews">
   <li *ngFor="let review of reviewList">
     <p> Rating: {{review.rating}}<br> Review: {{review.review_text}}</p>
   </li>
   <p *ngIf="reviewList.length < 1"> There are no reviews yet </p>
 </ul>
+<button type="button" class="btn btn-med btn-outline-primary" (click)="onButtonClick()">Add a new review</button>
 </html>
