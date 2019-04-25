@@ -3,6 +3,7 @@ import { CourseService } from '../services/course.service';
 import { Router} from '@angular/router';
 import { AddCourseComponent } from '../add-course/add-course.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {DepartmentService} from '../services/department.service';
 
 
 @Component({
@@ -13,14 +14,17 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 export class CoursesComponent implements OnInit {
   dataSource  = [];
+  stringData = [];
   responseArray: string;
+  departmentResponseArray: string;
   courseList = new Array<Course>();
   selectedCourse: Course;
 
 
   constructor(private courseService: CourseService,
               private router: Router,
-              private modalService: NgbModal) {
+              private modalService: NgbModal,
+              private departmentService: DepartmentService) {
   }
 
   ngOnInit() {
@@ -35,6 +39,11 @@ export class CoursesComponent implements OnInit {
       for (const i of obj.results) {
         const courseObj: string = JSON.stringify(i);
         const course: Course = JSON.parse(courseObj);
+        this.departmentService.getData(course.department).subscribe((newdata: Array<object>) => {
+          this.departmentResponseArray = JSON.stringify(newdata);
+          const dept: Department = JSON.parse(this.departmentResponseArray);
+          course.department = dept.department_name;
+        })
         this.courseList.push(course);
       }
     });
