@@ -19,7 +19,7 @@ export class CourseService {
     return this.httpClient.get(`${this.API_URL}/course/${this.COURSE_ID}`);
   }
   addNewCourse(course: NewCourse) {
-    return this.httpClient.post(`${this.API_URL}/course/`, course)
+    return this.httpClient.post(`${this.API_URL}/course`, course)
       .subscribe(
         data => {
           console.log('POST request is successful', data);

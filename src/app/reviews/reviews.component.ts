@@ -1,7 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ReviewService } from '../services/review.service';
 import { CourseService} from '../services/course.service';
-import { ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
+import { AddReviewComponent} from '../add-review/add-review.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-reviews',
@@ -14,10 +16,13 @@ export class ReviewsComponent implements OnInit {
   responseArray: string;
   reviewList = new Array<Review>();
   courseId: number;
+  courseName: string;
 
   constructor(private reviewService: ReviewService,
               private courseService: CourseService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private router: Router,
+              private modalService: NgbModal) {
   }
 
   ngOnInit() {
@@ -35,6 +40,7 @@ export class ReviewsComponent implements OnInit {
       const obj: MyObj = JSON.parse(this.responseArray);
       const courseObj: string = JSON.stringify(obj);
       const course: Course = JSON.parse(courseObj);
+      this.courseName = course.course_name;
       for (const i of course.course_reviews) {
         const reviewURL: string = JSON.stringify(i);
         console.log('this review url here is ' + reviewURL);
@@ -53,6 +59,16 @@ export class ReviewsComponent implements OnInit {
       console.log(review.review_text);
       console.log(review.rating);
       this.reviewList.push(review);
+    });
+  }
+  onButtonClick(): void {
+    const modalRef = this.modalService.open(AddReviewComponent);
+    (modalRef.componentInstance).courseId = this.courseId;
+    modalRef.result.then((result) => {
+      console.log(result);
+      this.courseService.newDataAdded.emit('new data added successfully');
+    }).catch((error) => {
+      console.log(error);
     });
   }
 }

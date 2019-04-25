@@ -12,7 +12,6 @@ import { AddCourseComponent } from './add-course/add-course.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule} from '@angular/forms';
-import { AddReviewComponentComponent } from './add-review-component/add-review-component.component';
 import { AddReviewComponent } from './add-review/add-review.component';
 
 @NgModule({
@@ -41,7 +40,8 @@ import { AddReviewComponent } from './add-review/add-review.component';
   ],
   bootstrap: [AppComponent],
   entryComponents: [
-    AddCourseComponent
+    AddCourseComponent,
+    AddReviewComponent
   ]
 })
 export class AppModule { }
