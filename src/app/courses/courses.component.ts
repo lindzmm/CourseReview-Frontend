@@ -1,7 +1,6 @@
-import {Component, OnInit, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, OnInit } from '@angular/core';
 import { CourseService } from '../services/course.service';
 import { Router} from '@angular/router';
-import { MatDialog } from '@angular/material';
 import { AddCourseComponent } from '../add-course/add-course.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -12,7 +11,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./courses.component.css']
 })
 
-export class CoursesComponent implements OnInit, OnChanges {
+export class CoursesComponent implements OnInit {
   dataSource  = [];
   responseArray: string;
   courseList = new Array<Course>();
@@ -21,16 +20,14 @@ export class CoursesComponent implements OnInit, OnChanges {
 
   constructor(private courseService: CourseService,
               private router: Router,
-              private modalService: NgbModal) { }
+              private modalService: NgbModal) {
+  }
 
   ngOnInit() {
     this.fetchCourses();
   }
-  ngOnChanges(changes: SimpleChanges) {
-    this.fetchCourses();
-  }
 
-  fetchCourses() {
+  fetchCourses(): void {
     this.courseService.getFirstPage().subscribe((data: Array<object>) => {
       this.dataSource  =  data;
       this.responseArray = JSON.stringify(data);
@@ -49,10 +46,9 @@ export class CoursesComponent implements OnInit, OnChanges {
   }
   onButtonClick(): void {
     const modalRef = this.modalService.open(AddCourseComponent);
-
     modalRef.result.then((result) => {
       console.log(result);
-      window.location.reload();
+      this.courseService.newDataAdded.emit('new data added successfully');
     }).catch((error) => {
       console.log(error);
     });

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import {NewCourse} from '../newCourse';
 
@@ -9,6 +9,7 @@ export class CourseService {
 
   API_URL  =  'http://localhost:8000';
   COURSE_ID: number;
+  newDataAdded = new EventEmitter<string>();
   constructor(private  httpClient: HttpClient) {}
   getFirstPage() {
     return  this.httpClient.get(`${this.API_URL}/course`);
