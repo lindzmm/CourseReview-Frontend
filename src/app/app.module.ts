@@ -12,13 +12,16 @@ import { AddCourseComponent } from './add-course/add-course.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule} from '@angular/forms';
+import { AddReviewComponentComponent } from './add-review-component/add-review-component.component';
+import { AddReviewComponent } from './add-review/add-review.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CoursesComponent,
     ReviewsComponent,
-    AddCourseComponent
+    AddCourseComponent,
+    AddReviewComponent
   ],
   imports: [
     BrowserModule,

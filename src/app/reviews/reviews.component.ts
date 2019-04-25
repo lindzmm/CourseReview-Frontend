@@ -10,14 +10,15 @@ import { ActivatedRoute} from '@angular/router';
 })
 
 export class ReviewsComponent implements OnInit {
-  dataSource  = [];
+  dataSource = [];
   responseArray: string;
   reviewList = new Array<Review>();
   courseId: number;
 
   constructor(private reviewService: ReviewService,
               private courseService: CourseService,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute) {
+  }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -41,9 +42,10 @@ export class ReviewsComponent implements OnInit {
       }
     });
   }
+
   fetchReviewDetails(url) {
     this.reviewService.getFirstPage(url).subscribe((data: Array<object>) => {
-      this.dataSource  =  data;
+      this.dataSource = data;
       console.log(data);
       this.responseArray = JSON.stringify(data);
       const review: Review = JSON.parse(this.responseArray);
