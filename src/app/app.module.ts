@@ -13,6 +13,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule} from '@angular/forms';
 import { AddReviewComponent } from './add-review/add-review.component';
+import { DepartmentComponent } from './department/department.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { AddReviewComponent } from './add-review/add-review.component';
     CoursesComponent,
     ReviewsComponent,
     AddCourseComponent,
-    AddReviewComponent
+    AddReviewComponent,
+    DepartmentComponent
   ],
   imports: [
     BrowserModule,

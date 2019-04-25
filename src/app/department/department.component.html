@@ -1,0 +1,7 @@
+<html>
+<ul>
+  <li *ngFor="let dept of departmentList" (click)="onSelect(dept)">
+    <a [routerLink]="['/departments', dept.id]"> {{dept.department_name}} </a>
+  </li>
+</ul>
+</html>

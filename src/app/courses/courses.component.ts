@@ -1,6 +1,6 @@
 import {Component, OnInit } from '@angular/core';
 import { CourseService } from '../services/course.service';
-import { Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { AddCourseComponent } from '../add-course/add-course.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {DepartmentService} from '../services/department.service';
@@ -13,38 +13,44 @@ import {DepartmentService} from '../services/department.service';
 })
 
 export class CoursesComponent implements OnInit {
-  dataSource  = [];
-  stringData = [];
   responseArray: string;
   departmentResponseArray: string;
   courseList = new Array<Course>();
   selectedCourse: Course;
+  departmentId: number;
 
 
   constructor(private courseService: CourseService,
               private router: Router,
               private modalService: NgbModal,
+              private route: ActivatedRoute,
               private departmentService: DepartmentService) {
   }
 
   ngOnInit() {
-    this.fetchCourses();
+    this.route.params.subscribe(params => {
+      this.departmentId = params.id;
+    });
+    this.fetchDepartment()
+    // this.fetchCourses();
   }
-
-  fetchCourses(): void {
-    this.courseService.getFirstPage().subscribe((data: Array<object>) => {
-      this.dataSource  =  data;
+  fetchDepartment(): void {
+    this.departmentService.getSpecificDepartment(this.departmentId).subscribe((data: Array<object>) => {
       this.responseArray = JSON.stringify(data);
-      const obj: MyObj = JSON.parse(this.responseArray);
-      for (const i of obj.results) {
-        const courseObj: string = JSON.stringify(i);
-        const course: Course = JSON.parse(courseObj);
-        this.departmentService.getData(course.department).subscribe((newdata: Array<object>) => {
-          this.departmentResponseArray = JSON.stringify(newdata);
-          const dept: Department = JSON.parse(this.departmentResponseArray);
-          course.department = dept.department_name;
-        })
-        this.courseList.push(course);
+      const dept: Department = JSON.parse(this.responseArray);
+      console.log(dept.department_courses);
+      for (const i of dept.department_courses) {
+        console.log('inside loop ' + i);
+        this.departmentService.getData(i).subscribe((newdata: Array<object>) =>{
+          this.responseArray = JSON.stringify(newdata);
+          const deptCourses: Course = JSON.parse(this.responseArray);
+          this.departmentService.getData(deptCourses.department).subscribe((moredata: Array<object>) => {
+            this.departmentResponseArray = JSON.stringify(moredata);
+            const depart: Department = JSON.parse(this.departmentResponseArray);
+            deptCourses.department = dept.department_name;
+          });
+          this.courseList.push(deptCourses);
+        });
       }
     });
   }
