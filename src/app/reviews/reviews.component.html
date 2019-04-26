@@ -1,4 +1,8 @@
 <html>
+<nav>
+  <a [routerLink]="'/departments/'"> Departments </a>
+  <a [routerLink]="['/departments/', departmentId]"> Courses </a>
+</nav>
 <h2>{{ courseName }}</h2>
 <ul class="reviews">
   <li *ngFor="let review of reviewList">

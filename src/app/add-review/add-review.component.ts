@@ -5,6 +5,7 @@ import {NgForm} from '@angular/forms';
 import {NewReview} from '../newReview';
 import {ReviewService} from '../services/review.service';
 import {ActivatedRoute} from '@angular/router';
+import { Course } from '../course';
 
 @Component({
   selector: 'app-add-review',

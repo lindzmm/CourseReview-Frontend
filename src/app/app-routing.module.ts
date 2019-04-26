@@ -22,6 +22,11 @@ const routes: Routes = [
   {
     path: 'departments/:id',
     component: CoursesComponent
+  },
+  {
+    path: '',
+    redirectTo: 'departments',
+    pathMatch: 'full'
   }
 ];
 

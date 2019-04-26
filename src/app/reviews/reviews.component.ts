@@ -4,6 +4,9 @@ import { CourseService} from '../services/course.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import { AddReviewComponent} from '../add-review/add-review.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Course} from '../course';
+import { Review} from '../review';
+import {DepartmentService} from '../services/department.service';
 
 @Component({
   selector: 'app-reviews',
@@ -14,12 +17,15 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class ReviewsComponent implements OnInit {
   dataSource = [];
   responseArray: string;
+  responseArray2: string;
   reviewList = new Array<Review>();
   courseId: number;
   courseName: string;
+  departmentId: number;
 
   constructor(private reviewService: ReviewService,
               private courseService: CourseService,
+              private departmentService: DepartmentService,
               private route: ActivatedRoute,
               private router: Router,
               private modalService: NgbModal) {
@@ -39,8 +45,17 @@ export class ReviewsComponent implements OnInit {
       this.responseArray = JSON.stringify(data);
       const obj: MyObj = JSON.parse(this.responseArray);
       const courseObj: string = JSON.stringify(obj);
-      const course: Course = JSON.parse(courseObj);
+      const course: TempCourse = JSON.parse(courseObj);
       this.courseName = course.course_name;
+      console.log('department is ' + course.department);
+      // TODO: get dept from url and create real course
+      this.departmentService.getData(course.department).subscribe((data:Array<object>) =>{
+        this.responseArray2 = JSON.stringify(data);
+        const dept: Department = JSON.parse(this.responseArray2);
+        this.departmentId = dept.id;
+        console.log('this id is' + this.departmentId);
+      });
+      // this.departmentId = course.department.id;
       for (const i of course.course_reviews) {
         const reviewURL: string = JSON.stringify(i);
         console.log('this review url here is ' + reviewURL);
@@ -78,4 +93,13 @@ interface MyObj {
   next: string;
   previous: string;
   results: Array<string>;
+}
+
+class TempCourse {
+  id: number;
+  course_name: string;
+  course_number: number;
+  department: string;
+  url: string;
+  course_reviews: Array<string>;
 }
