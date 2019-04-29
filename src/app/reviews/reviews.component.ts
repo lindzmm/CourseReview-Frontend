@@ -19,9 +19,12 @@ export class ReviewsComponent implements OnInit {
   responseArray: string;
   responseArray2: string;
   reviewList = new Array<Review>();
-  courseId: number;
+  uuid: string;
   courseName: string;
   departmentId: number;
+  courseNumber: number;
+  departmentName: string;
+  course: Course;
 
   constructor(private reviewService: ReviewService,
               private courseService: CourseService,
@@ -33,30 +36,21 @@ export class ReviewsComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.courseId = params.id;
+      this.uuid = params.id;
     });
     this.fetchReviews();
   }
 
   fetchReviews() {
-    this.courseService.getSpecificCourse(this.courseId).subscribe((data: Array<object>) => {
+    this.courseService.getSpecificCourse(this.uuid).subscribe((data: Array<object>) => {
       console.log('we got here');
       this.dataSource = data;
       this.responseArray = JSON.stringify(data);
       const obj: MyObj = JSON.parse(this.responseArray);
       const courseObj: string = JSON.stringify(obj);
-      const course: TempCourse = JSON.parse(courseObj);
-      this.courseName = course.course_name;
-      console.log('department is ' + course.department);
-      // TODO: get dept from url and create real course
-      this.departmentService.getData(course.department).subscribe((data:Array<object>) =>{
-        this.responseArray2 = JSON.stringify(data);
-        const dept: Department = JSON.parse(this.responseArray2);
-        this.departmentId = dept.id;
-        console.log('this id is' + this.departmentId);
-      });
-      // this.departmentId = course.department.id;
-      for (const i of course.course_reviews) {
+      this.course = JSON.parse(courseObj);
+      console.log('there are ' + this.course.course_reviews.length + ' reviews');
+      for (const i of this.course.course_reviews) {
         const reviewURL: string = JSON.stringify(i);
         console.log('this review url here is ' + reviewURL);
         this.fetchReviewDetails(reviewURL);
@@ -78,7 +72,7 @@ export class ReviewsComponent implements OnInit {
   }
   onButtonClick(): void {
     const modalRef = this.modalService.open(AddReviewComponent);
-    (modalRef.componentInstance).courseId = this.courseId;
+    (modalRef.componentInstance).courseId = this.uuid;
     modalRef.result.then((result) => {
       console.log(result);
       this.courseService.newDataAdded.emit('new data added successfully');
@@ -96,10 +90,9 @@ interface MyObj {
 }
 
 class TempCourse {
-  id: number;
+  uuid: string;
   course_name: string;
   course_number: number;
-  department: string;
   url: string;
   course_reviews: Array<string>;
 }

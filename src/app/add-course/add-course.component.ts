@@ -27,7 +27,7 @@ export class AddCourseComponent implements OnInit {
     this.course = new NewCourse();
     if (this.courseName.length > 0) {
       this.course.course_name = this.courseName;
-      this.course.department = this.department.url;
+      // this.course.department = this.department.url;
       this.course.course_number = courseNumber;
       this.activeModal.close('Modal Closed');
       this.courseService.addNewCourse(this.course);

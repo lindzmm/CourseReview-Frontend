@@ -1,8 +1,7 @@
 export class Course {
-  id: number;
+  uuid: string;
   course_name: string;
   course_number: number;
-  department: Department;
   url: string;
   course_reviews: Array<string>;
 }

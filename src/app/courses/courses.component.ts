@@ -5,6 +5,9 @@ import { AddCourseComponent } from '../add-course/add-course.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {DepartmentService} from '../services/department.service';
 import { Course} from '../course';
+import {Subject} from '../subject';
+import {MadGradeCourse} from '../madgradesCourse';
+import {NewCourse} from '../newCourse';
 
 
 @Component({
@@ -14,85 +17,98 @@ import { Course} from '../course';
 })
 
 export class CoursesComponent implements OnInit {
-  responseArray: string;
-  departmentResponseArray: string;
-  courseList = new Array<Course>();
-  selectedCourse: Course;
-  departmentId: number;
-  departmentName: string;
+  courseList = new Array<MadGradeCourse>();
+  selectedCourse: MadGradeCourse;
+  courseCode: number;
   dept: Department;
-  course: Course;
+  subject: TempSub;
+  pageNum: number;
+  curr: number;
+  newCourse: NewCourse;
 
 
   constructor(private courseService: CourseService,
               private router: Router,
               private modalService: NgbModal,
-              private route: ActivatedRoute,
-              private departmentService: DepartmentService) {
+              private route: ActivatedRoute) {
   }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.departmentId = params.id;
+      this.courseCode = params.id;
+      this.courseList.length = 0;
+      this.fetchCourse();
     });
-    this.fetchDepartment();
-    // this.fetchCourses();
+    // this.fetchDepartment();
   }
-  fetchDepartment(): void {
-    this.departmentService.getSpecificDepartment(this.departmentId).subscribe((data: Array<object>) => {
-      this.responseArray = JSON.stringify(data);
-      this.dept = JSON.parse(this.responseArray);
-      this.departmentName = this.dept.department_name;
-      this.fetchCourses();
-    });
+  fetchCourse(): void {
+    this.courseService.getMadGradesCourses(1, this.courseCode, '1b1c72ca7fe54e0cb959f2a8b0d718f6')
+      .subscribe((data: Array<object>) => {
+        this.createCourse(data);
+        this.curr = 2;
+        while (this.curr <= this.pageNum) {
+          this.courseService.getMadGradesCourses(this.curr, this.courseCode, '1b1c72ca7fe54e0cb959f2a8b0d718f6')
+            .subscribe((newdata: Array<object>) => {
+              this.createCourse(newdata);
+            });
+          this.curr++;
+        }
+      });
   }
-  fetchCourses(): void {
-      console.log(this.dept.department_courses);
-      this.course = new Course();
-      for (const i of this.dept.department_courses) {
-        console.log('inside loop ' + i);
-        this.departmentService.getData(i).subscribe((newdata: Array<object>) =>{
-          this.responseArray = JSON.stringify(newdata);
-          const deptCourses: TempCourse = JSON.parse(this.responseArray);
-          console.log(deptCourses);
-          console.log(this.dept);
-          this.course = new Course();
-          this.departmentName = this.dept.department_name;
-          this.course.id = deptCourses.id;
-          this.course.url = deptCourses.url;
-          this.course.course_name = deptCourses.course_name;
-          this.course.course_reviews = deptCourses.course_reviews;
-          this.course.department = this.dept;
-          this.course.course_number = deptCourses.course_number;
-          this.courseList.push(this.course);
-        });
+  createCourse(data) {
+    const course: CourseList = JSON.parse(JSON.stringify(data));
+    console.log('course is ' + course.totalPages);
+    this.pageNum = course.totalPages;
+    console.log('pageNum ' + this.pageNum + ', curr ' + this.curr);
+    for (const i of course.results) {
+      const mgCourse: MadGradeCourse = JSON.parse(JSON.stringify(i));
+      console.log(mgCourse);
+      this.courseList.push(mgCourse);
+      /*this.newCourse = new NewCourse();
+      this.newCourse.course_number = mgCourse.number;
+      this.newCourse.course_name = mgCourse.name;
+      this.newCourse.uuid = mgCourse.uuid;
+      this.courseService.addNewCourse(this.newCourse);*/
+      for (const j of mgCourse.subjects) {
+        const sub: TempSub = JSON.parse(JSON.stringify(j));
+        if (sub.code === this.courseCode) {
+          this.subject = sub;
+          console.log('subject is ' + this.subject.name);
+        }
       }
-  }
-  onSelect(course: Course): void {
-    this.selectedCourse = course;
-    console.log('selected course is ' + this.selectedCourse.course_name);
-    this.router.navigate(['/courses', this.selectedCourse.id]);
-  }
-  onButtonClick(): void {
-    const modalRef = this.modalService.open(AddCourseComponent);
-    (modalRef.componentInstance).department = this.dept;
-    modalRef.result.then((result) => {
-      console.log(result);
-      this.courseService.newDataAdded.emit('new data added successfully');
-    }).catch((error) => {
-      console.log(error);
+    }
+    this.courseList = this.courseList.sort((a, b) => {
+      if ( a.number > b.number) {
+        return 1;
+      } else if (a.number < b.number) {
+        return -1;
+      } else {
+        return 0;
+      }
     });
+  }
+  onSelect(course: MadGradeCourse): void {
+    this.selectedCourse = course;
+    console.log('selected course is ' + this.selectedCourse.name);
+    this.router.navigate(['/courses', this.selectedCourse.uuid]);
   }
 }
 
-class TempCourse {
-  id: number;
-  course_name: string;
-  course_number: number;
-  department: string;
-  url: string;
-  course_reviews: Array<string>;
+
+class CourseList {
+  currentPage: number;
+  totalPages: number;
+  totalCount: number;
+  nextPageUrl: string;
+  results: Array<string>;
 }
+
+class TempSub {
+  'name': string;
+  'abbreviation': string;
+  'code': number;
+}
+
 
 
 

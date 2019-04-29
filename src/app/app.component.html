@@ -1,7 +1,30 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<h1>UW-Madison Course Reviews</h1>
-<div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">UW-Madison Course Reviews</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-  <router-outlet></router-outlet>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2 search" type="search" placeholder="Search" aria-label="Search">
+      <button type="button" class="btn btn-med btn-outline-primary" type="submit">Search</button>
+    </form>
+  </div>
+</nav>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-1" class="pull-left">
+      <h4>Departments</h4>
+      <div class="list-group" *ngFor="let dept of subjectList" (click)="onSelect(dept)">
+        <a [routerLink]="['/departments/', dept.code]" class="list-group-item list-group-item-action">{{ dept.name }}</a>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
 </div>
+
 

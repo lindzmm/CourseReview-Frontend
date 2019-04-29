@@ -1,12 +1,9 @@
 <html>
-<nav>
-  <a [routerLink]="'/departments/'"> Departments </a>
-</nav>
+<h1>{{subject.name}}</h1>
 <ul>
   <li *ngFor="let course of courseList" (click)="onSelect(course)">
-    <span class="badge">{{course.department.department_name}}: {{course.course_number}}</span> <a [routerLink]="['/courses', course.id]"> {{course.course_name}} </a>
+    <span class="badge">{{subject.name}} {{course.number}}: <a [routerLink]="['/courses/', course.uuid]">{{course.name}}</a> </span>
   </li>
 </ul>
-<button type="button" class="btn btn-med btn-outline-primary" (click)="onButtonClick()">Add a new course</button>
 </html>
 
