@@ -1,4 +1,5 @@
 export class NewCourse {
+  uuid: string;
   course_name: string;
-  department: string;
+  course_number: number;
 }

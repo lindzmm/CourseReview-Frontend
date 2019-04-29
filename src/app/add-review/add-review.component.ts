@@ -5,6 +5,7 @@ import {NgForm} from '@angular/forms';
 import {NewReview} from '../newReview';
 import {ReviewService} from '../services/review.service';
 import {ActivatedRoute} from '@angular/router';
+import { Course } from '../course';
 
 @Component({
   selector: 'app-add-review',
@@ -17,7 +18,7 @@ export class AddReviewComponent implements OnInit {
   course: Course;
   courseURL: string;
   review: NewReview;
-  public courseId: number;
+  public courseId: string;
 
   constructor(public activeModal: NgbActiveModal,
               private reviewService: ReviewService,
@@ -31,7 +32,7 @@ export class AddReviewComponent implements OnInit {
   onSubmit(form: NgForm) {
     this.rating = form.value.rating;
     this.reviewText = form.value.review_text;
-    this.courseURL = 'http://localhost:8000/course/' + this.courseId;
+    this.courseURL = 'http://localhost:8000/api/course/' + this.courseId;
     console.log(this.rating);
     console.log(this.reviewText);
     console.log(this.courseId);
@@ -42,7 +43,7 @@ export class AddReviewComponent implements OnInit {
       this.review.course = this.courseURL;
       this.activeModal.close('Modal Closed');
       this.reviewService.addNewReview(this.review);
-      location.reload();
+      //location.reload();
     }
   }
 }

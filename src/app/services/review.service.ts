@@ -7,7 +7,7 @@ import {NewReview} from '../newReview';
 })
 export class ReviewService {
 
-  API_URL  =  'http://localhost:8000';
+  API_URL  =  'http://localhost:8000/api';
   REVIEW_URL: string;
   constructor(private  httpClient: HttpClient) { }
   getFirstPage(reviewURL) {

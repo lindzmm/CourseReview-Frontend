@@ -10,7 +10,7 @@ import { NewCourse} from '../newCourse';
   styleUrls: ['./add-course.component.css']
 })
 export class AddCourseComponent implements OnInit {
-  department: string;
+  public department: Department;
   courseName: string;
   course: NewCourse;
   constructor(public activeModal: NgbActiveModal,
@@ -19,16 +19,16 @@ export class AddCourseComponent implements OnInit {
   ngOnInit() {
   }
   onSubmit(form: NgForm) {
-    this.department = form.value.department;
     this.courseName = form.value.course_name;
-    const courseNumber = form.value.course_number;
+    const courseNumber: number = form.value.course_number;
     console.log(this.department);
     console.log(this.courseName);
     console.log(courseNumber);
     this.course = new NewCourse();
-    if (this.department.length > 0 && this.courseName.length > 0) {
+    if (this.courseName.length > 0) {
       this.course.course_name = this.courseName;
-      this.course.department = this.department;
+      // this.course.department = this.department.url;
+      this.course.course_number = courseNumber;
       this.activeModal.close('Modal Closed');
       this.courseService.addNewCourse(this.course);
       location.reload();

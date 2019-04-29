@@ -4,6 +4,7 @@ import {CoursesComponent} from './courses/courses.component';
 import {ReviewsComponent} from './reviews/reviews.component';
 import { CommonModule } from '@angular/common';
 import {AppComponent} from './app.component';
+import {DepartmentComponent} from './department/department.component';
 
 const routes: Routes = [
   {
@@ -13,6 +14,19 @@ const routes: Routes = [
   {
     path: 'courses/:id',
     component: ReviewsComponent
+  },
+  {
+    path: 'departments',
+    component: DepartmentComponent
+  },
+  {
+    path: 'departments/:id',
+    component: CoursesComponent
+  },
+  {
+    path: '',
+    redirectTo: 'departments',
+    pathMatch: 'full'
   }
 ];
 

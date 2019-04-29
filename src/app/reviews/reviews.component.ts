@@ -4,6 +4,9 @@ import { CourseService} from '../services/course.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import { AddReviewComponent} from '../add-review/add-review.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Course} from '../course';
+import { Review} from '../review';
+import {DepartmentService} from '../services/department.service';
 
 @Component({
   selector: 'app-reviews',
@@ -14,12 +17,18 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class ReviewsComponent implements OnInit {
   dataSource = [];
   responseArray: string;
+  responseArray2: string;
   reviewList = new Array<Review>();
-  courseId: number;
+  uuid: string;
   courseName: string;
+  departmentId: number;
+  courseNumber: number;
+  departmentName: string;
+  course: Course;
 
   constructor(private reviewService: ReviewService,
               private courseService: CourseService,
+              private departmentService: DepartmentService,
               private route: ActivatedRoute,
               private router: Router,
               private modalService: NgbModal) {
@@ -27,21 +36,21 @@ export class ReviewsComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.courseId = params.id;
+      this.uuid = params.id;
     });
     this.fetchReviews();
   }
 
   fetchReviews() {
-    this.courseService.getSpecificCourse(this.courseId).subscribe((data: Array<object>) => {
+    this.courseService.getSpecificCourse(this.uuid).subscribe((data: Array<object>) => {
       console.log('we got here');
       this.dataSource = data;
       this.responseArray = JSON.stringify(data);
       const obj: MyObj = JSON.parse(this.responseArray);
       const courseObj: string = JSON.stringify(obj);
-      const course: Course = JSON.parse(courseObj);
-      this.courseName = course.course_name;
-      for (const i of course.course_reviews) {
+      this.course = JSON.parse(courseObj);
+      console.log('there are ' + this.course.course_reviews.length + ' reviews');
+      for (const i of this.course.course_reviews) {
         const reviewURL: string = JSON.stringify(i);
         console.log('this review url here is ' + reviewURL);
         this.fetchReviewDetails(reviewURL);
@@ -63,7 +72,7 @@ export class ReviewsComponent implements OnInit {
   }
   onButtonClick(): void {
     const modalRef = this.modalService.open(AddReviewComponent);
-    (modalRef.componentInstance).courseId = this.courseId;
+    (modalRef.componentInstance).courseId = this.uuid;
     modalRef.result.then((result) => {
       console.log(result);
       this.courseService.newDataAdded.emit('new data added successfully');
@@ -78,4 +87,12 @@ interface MyObj {
   next: string;
   previous: string;
   results: Array<string>;
+}
+
+class TempCourse {
+  uuid: string;
+  course_name: string;
+  course_number: number;
+  url: string;
+  course_reviews: Array<string>;
 }
