@@ -1,5 +1,34 @@
 <html>
-<h2>{{ departmentName}} {{course.course_number}}: {{ course.course_name }}</h2>
+<div *ngIf="subjectList.length > 1"> <p>cross-listed</p>
+  <h2 *ngFor="let sub of subjectList">{{ sub.name }} </h2> <h2> {{course.course_number}}: {{ course.course_name }}</h2>
+</div>
+<h2 *ngIf="subjectList.length === 1">{{ subject.name}} {{course.course_number}}: {{ course.course_name }}</h2>
+<div>
+  <h5>Cumulative Grades</h5>
+  <h6>Average GPA: {{averageGPA}}</h6>
+  <table>
+    <tr>
+      <th>Total</th>
+      <th>A count</th>
+      <th>AB count</th>
+      <th>B count</th>
+      <th>BC count</th>
+      <th>C count</th>
+      <th>D count</th>
+      <th>F count</th>
+    </tr>
+    <tr>
+      <td>{{cumulative.total}}</td>
+      <td>{{cumulative.aCount}}</td>
+      <td>{{cumulative.abCount}}</td>
+      <td>{{cumulative.bCount}}</td>
+      <td>{{cumulative.bcCount}}</td>
+      <td>{{cumulative.cCount}}</td>
+      <td>{{cumulative.dCount}}</td>
+      <td>{{cumulative.fCount}}</td>
+    </tr>
+  </table>
+</div>
 <ul class="reviews">
   <div *ngIf="reviewList.length > 0">
     <li *ngFor="let review of reviewList">
