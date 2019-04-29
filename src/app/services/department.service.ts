@@ -22,4 +22,8 @@ export class DepartmentService {
     const header = new HttpHeaders( { 'Content-Type': 'application/json', Authorization: 'Bearer ' + authToken});
     return this.httpClient.get(`https://api.madgrades.com/v1/subjects?page=${pageNum}`, {headers: header});
   }
+  getMadGradesData(path, authToken): Observable<any> {
+    const header = new HttpHeaders( { 'Content-Type': 'application/json', Authorization: 'Bearer ' + authToken});
+    return this.httpClient.get(`${path}`, {headers: header});
+  }
 }

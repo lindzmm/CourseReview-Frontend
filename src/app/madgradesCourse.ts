@@ -5,4 +5,6 @@ export class MadGradeCourse {
   'names': Array<string>;
   'subjects': Array<string>;
   'url': string;
+  'gradesUrl': string;
+  'CourseOfferings': Array<string>;
 }

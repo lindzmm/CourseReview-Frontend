@@ -7,6 +7,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Course} from '../course';
 import { Review} from '../review';
 import {DepartmentService} from '../services/department.service';
+import {MadGradeCourse} from '../madgradesCourse';
+import {Subject} from '../subject';
+import {Cumulative, Grades} from '../grades';
 
 @Component({
   selector: 'app-reviews',
@@ -17,14 +20,14 @@ import {DepartmentService} from '../services/department.service';
 export class ReviewsComponent implements OnInit {
   dataSource = [];
   responseArray: string;
-  responseArray2: string;
   reviewList = new Array<Review>();
   uuid: string;
-  courseName: string;
-  departmentId: number;
-  courseNumber: number;
-  departmentName: string;
   course: Course;
+  subject: Subject;
+  subjectList = new Array<Subject>();
+  averageGPA: number;
+  grade: Grades;
+  cumulative: Cumulative;
 
   constructor(private reviewService: ReviewService,
               private courseService: CourseService,
@@ -38,6 +41,7 @@ export class ReviewsComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.uuid = params.id;
     });
+    this.getDepartment();
     this.fetchReviews();
   }
 
@@ -69,6 +73,43 @@ export class ReviewsComponent implements OnInit {
       console.log(review.rating);
       this.reviewList.push(review);
     });
+  }
+  getDepartment(): void {
+    this.departmentService
+      .getMadGradesData('https://api.madgrades.com/v1/courses/' + this.uuid, '1b1c72ca7fe54e0cb959f2a8b0d718f6')
+      .subscribe((data: Array<object>) => {
+        const mgCourse: MadGradeCourse = JSON.parse(JSON.stringify(data));
+        this.getGrades(mgCourse);
+        console.log(mgCourse.name);
+        for (const i of mgCourse.subjects) {
+          this.subject = new Subject();
+          this.subject = JSON.parse(JSON.stringify(i));
+          console.log(this.subject.name);
+          this.subjectList.push(this.subject);
+        }
+      });
+  }
+  getGrades(course: MadGradeCourse) {
+    const gradesURL: string = course.gradesUrl;
+    this.departmentService
+      .getMadGradesData(gradesURL, '1b1c72ca7fe54e0cb959f2a8b0d718f6')
+      .subscribe((data: Array<object>) => {
+        this.grade = JSON.parse(JSON.stringify(data));
+        this.cumulative = JSON.parse(JSON.stringify(this.grade.cumulative));
+        this.computeGPA();
+      });
+  }
+  computeGPA() {
+    let temp: number = 0;
+    temp += (this.cumulative.aCount * 4);
+    temp += (this.cumulative.abCount * 3.5);
+    temp += (this.cumulative.bCount * 3);
+    temp += (this.cumulative.bcCount * 2.5);
+    temp += (this.cumulative.cCount * 2);
+    temp += (this.cumulative.dCount * 1);
+    temp = (temp / this.cumulative.total);
+    temp = Math.round(temp * 1000) / 1000;
+    this.averageGPA = temp;
   }
   onButtonClick(): void {
     const modalRef = this.modalService.open(AddReviewComponent);
