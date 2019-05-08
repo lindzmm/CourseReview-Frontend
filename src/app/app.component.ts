@@ -54,6 +54,11 @@ export class AppComponent implements OnInit {
     console.log('selected department is ' + this.selectedDepartment.name);
     this.router.navigate(['/department', this.selectedDepartment.code]);
   }
+  onSearch() {
+    const searchText = (document.getElementById('search') as HTMLInputElement).value;
+    console.log(searchText);
+    this.router.navigate(['/search', searchText]);
+  }
 
   }
 

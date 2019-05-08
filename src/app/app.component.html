@@ -8,8 +8,8 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
     <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2 search" type="search" placeholder="Search" aria-label="Search">
-      <button type="button" class="btn btn-med btn-outline-primary" type="submit">Search</button>
+      <input class="form-control mr-sm-2 search" type="search" name="search" id="search" placeholder="Search" aria-label="Search">
+      <button type="button" class="btn btn-med btn-outline-primary" type="submit" [routerLink]="['/search/']"(click)="onSearch()">Search</button>
     </form>
   </div>
 </nav>

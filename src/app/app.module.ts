@@ -14,6 +14,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule} from '@angular/forms';
 import { AddReviewComponent } from './add-review/add-review.component';
 import { DepartmentComponent } from './department/department.component';
+import { SearchComponent } from './search/search.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { DepartmentComponent } from './department/department.component';
     ReviewsComponent,
     AddCourseComponent,
     AddReviewComponent,
-    DepartmentComponent
+    DepartmentComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,

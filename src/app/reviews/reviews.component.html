@@ -4,6 +4,18 @@
 </div>
 <h2 *ngIf="subjectList.length === 1">{{ subject.name}} {{course.course_number}}: {{ course.course_name }}</h2>
 <div>
+  <h5>Course Info</h5>
+  <span>Credits: </span> <span *ngIf="course.credits > 0">{{course.credits}}</span><br>
+  <span>Description: {{course.description}}</span><br>
+  <span>Prereq: {{course.prereq}}</span><br>
+  <span *ngIf="course.ethnicStudies==true">Ethnic Studies: {{course.ethnicStudies}}<br></span>
+  <span *ngFor="let gened of course.genEd">General Education: {{gened}}<br></span>
+  <span>Breadth: </span><span *ngFor="let bre of course.breadth">{{bre}} </span><br>
+  <span>Level: {{course.level}}</span><br>
+  <span *ngIf="course.lasCredit==true">L&S Credit: {{course.lasCredit}}<br></span>
+  <span>Typically Offered: </span><span *ngFor="let typical of course.typicallyOffered">{{typical}} </span><span *ngIf="course.typicallyOffered.length > 0"><br></span>
+</div>
+<div>
   <h5>Cumulative Grades</h5>
   <h6>Average GPA: {{averageGPA}}</h6>
   <table>
