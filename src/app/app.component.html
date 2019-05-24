@@ -8,10 +8,80 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
     <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2 search" type="search" placeholder="Search" aria-label="Search">
-      <button type="button" class="btn btn-med btn-outline-primary" type="submit">Search</button>
+      <input class="form-control mr-sm-2 search" type="search" name="search" id="search" placeholder="Search" aria-label="Search">
+      <div class="dropdown dropdown-lg">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+        <div class="dropdown-menu dropdown-menu-right" role="menu">
+          <form class="form-horizontal" role="form">
+            <div class="form-group">
+              <label>Level:</label>
+              <div class="checkbox">
+                <label><input type="checkbox" value="Elementary">Elementary</label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox" value="Intermediate">Intermediate</label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox" value="Advanced">Advanced</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Gen Ed:</label>
+              <div class="checkbox">
+                <label><input type="checkbox" value="ComA">Com A</label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox" value="ComB">Com B</label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox" value="QRA">QR A</label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox" value="QRB">QR B</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Ethnic Studies:</label>
+              <div class="checkbox">
+                <label><input type="checkbox" value="EthnicStudies">Ethnic Studies</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Breadth:</label>
+              <div class="checkbox">
+                <label><input type="checkbox" value="Biological">Biological Science</label>
+              </div><div class="checkbox">
+                <label><input type="checkbox" value="Humanities">Humanities</label>
+              </div><div class="checkbox">
+                <label><input type="checkbox" value="Literature">Literature</label>
+              </div><div class="checkbox">
+                <label><input type="checkbox" value="Natural">Natural Science</label>
+              </div><div class="checkbox">
+                <label><input type="checkbox" value="Physical">Physical Science</label>
+              </div><div class="checkbox">
+                <label><input type="checkbox" value="Social">Social Science</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Typically Offered:</label>
+              <div class="checkbox">
+                <label><input type="checkbox" value="Fall">Fall</label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox" value="Spring">Spring</label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox" value="Summer">Summer</label>
+              </div>
+              <button type="submit" class="btn btn-primary btn-block">Search<span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <button type="button" class="btn btn-med btn-outline-primary" type="submit" [routerLink]="['/search/']"(click)="onSearch()">Search</button>
     </form>
   </div>
+
 </nav>
 <div class="container">
   <div class="row">

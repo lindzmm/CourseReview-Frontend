@@ -1,0 +1,7 @@
+<h1>{{searchText}}</h1>
+<ul>
+  <li *ngFor="let course of resultsList" (click)="onSelect(course)">
+    <span class="badge">{{course.department}} {{course.course_number}}: <a [routerLink]="['/courses/', course.uuid]">{{course.course_name}}</a> </span>
+  </li>
+</ul>
+

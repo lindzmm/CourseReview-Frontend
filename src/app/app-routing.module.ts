@@ -5,6 +5,7 @@ import {ReviewsComponent} from './reviews/reviews.component';
 import { CommonModule } from '@angular/common';
 import {AppComponent} from './app.component';
 import {DepartmentComponent} from './department/department.component';
+import {SearchComponent} from './search/search.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,10 @@ const routes: Routes = [
   {
     path: 'departments/:id',
     component: CoursesComponent
+  },
+  {
+    path: 'search/:id',
+    component: SearchComponent
   },
   {
     path: '',

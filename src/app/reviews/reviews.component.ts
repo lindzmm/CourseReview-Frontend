@@ -106,8 +106,9 @@ export class ReviewsComponent implements OnInit {
     temp += (this.cumulative.bCount * 3);
     temp += (this.cumulative.bcCount * 2.5);
     temp += (this.cumulative.cCount * 2);
-    temp += (this.cumulative.dCount * 1);
-    temp = (temp / this.cumulative.total);
+    temp += (this.cumulative.dCount);
+    const total: number = this.cumulative.aCount + this.cumulative.abCount + this.cumulative.bCount + this.cumulative.bcCount + this.cumulative.cCount + this.cumulative.dCount + this.cumulative.fCount;
+    temp = (temp / total);
     temp = Math.round(temp * 1000) / 1000;
     this.averageGPA = temp;
   }

@@ -43,7 +43,7 @@ export class AddReviewComponent implements OnInit {
       this.review.course = this.courseURL;
       this.activeModal.close('Modal Closed');
       this.reviewService.addNewReview(this.review);
-      //location.reload();
+      location.reload();
     }
   }
 }
