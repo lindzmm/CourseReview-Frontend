@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
+import {SearchService} from '../services/search.service';
+import {Course} from '../course';
+import {Subject} from '../subject';
 
 @Component({
   selector: 'app-search',
@@ -12,7 +15,9 @@ export class SearchComponent implements OnInit {
   courseNumber: number;
   departmentPossibilities: Array<string> = [];
   department = '';
+  courseName = '';
   inputArray: Array<string> = [];
+  resultsList: Array<Course> = [];
    SubjectArray: Array<string> = ['Air Force Aerospace Studies', 'African Languages and Literature',
     'Afro-American Studies', 'Agricultural and Applied Economics', 'Biological Systems Engineering',
     'Life Sciences Communication', 'Agroecology', 'Agronomy', 'American Indian Studies', 'Anatomy', 'Anatomy & Physiology',
@@ -73,11 +78,15 @@ export class SearchComponent implements OnInit {
     'POLI SCI', 'PORTUG', 'POP HLTH', 'PRO OR', 'PSYCHIAT', 'PSYCH', 'PUB AFFR', 'PUBLHLTH', 'RADIOL', 'RHAB MED', 'RELIG ST', 'C&E SOC',
     'SCAND ST', 'STS', 'SR MED', 'SLAVIC', 'SOC WORK', 'SOC', 'SOIL SCI', 'SPANISH', 'STAT', 'COMP BIO', 'SURGERY', 'SURG SCI', 'THER SCI',
     'THEATRE', 'UNIV FOR', 'URB R PL', 'AHABS', 'WL ECOL', 'GEN&WS', 'ZOOLOGY', 'STDYABRD', 'AdminUse'];
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute,
+              private searchService: SearchService) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.searchText = params.id;
+      this.departmentPossibilities = [];
+      this.courseNumber = undefined;
+      this.resultsList = [];
       this.getCourses();
     });
   }
@@ -85,7 +94,7 @@ export class SearchComponent implements OnInit {
     const regexStr = this.searchText.match(/[a-zA-Z ]+|[0-9]+(?:\.[0-9]+|)/g);
     console.log(regexStr);
     for (let x of regexStr) {
-      this.departmentPossibilities = []
+      let localPossibilities: Array<string> = [];
       if ('0123456789'.indexOf(x.charAt(0)) !== -1) {
         this.courseNumber = parseInt(x, 10);
         console.log(this.courseNumber + ' Is a number');
@@ -105,10 +114,11 @@ export class SearchComponent implements OnInit {
             // console.log(x.trim().toLowerCase());
           } else {
             found = true;
-            this.departmentPossibilities = [];
-            console.log(this.departmentPossibilities + ' should be blank');
-            this.departmentPossibilities.push(this.SubjectArray[y]);
-            console.log('The department is ' + this.departmentPossibilities);
+            localPossibilities = [];
+            console.log(localPossibilities + ' should be blank');
+            localPossibilities.push(this.SubjectArray[y]);
+            this.department = this.SubjectArray[y];
+            console.log('The department is ' + localPossibilities);
             break;
           }
           if (included === false && found === false) {
@@ -119,10 +129,11 @@ export class SearchComponent implements OnInit {
               // console.log(x.trim().toLowerCase());
             } else {
               found = true;
-              this.departmentPossibilities = [];
-              console.log(this.departmentPossibilities + ' should be blank');
-              this.departmentPossibilities.push(this.SubjectArray[y]);
-              console.log('The department is ' + this.departmentPossibilities);
+              localPossibilities = [];
+              console.log(localPossibilities + ' should be blank');
+              localPossibilities.push(this.SubjectArray[y]);
+              this.department = this.SubjectArray[y];
+              console.log('The department is ' + localPossibilities);
               break;
             }
             if (included === false && found === false) {
@@ -136,8 +147,8 @@ export class SearchComponent implements OnInit {
               }
               if (included === true) {
                 found = true;
-                this.departmentPossibilities.push(this.SubjectArray[y]);
-                console.log('The department is ' + this.departmentPossibilities);
+                localPossibilities.push(this.SubjectArray[y]);
+                console.log('The department is ' + localPossibilities);
               }
             }
             if (included === false && found === false) {
@@ -151,22 +162,94 @@ export class SearchComponent implements OnInit {
               }
               if (included === true) {
                 found = true;
-                this.departmentPossibilities.push(this.SubjectArray[y]);
-                console.log('The department is ' + this.departmentPossibilities);
+                localPossibilities.push(this.SubjectArray[y]);
+                console.log('The department is ' + localPossibilities);
               }
             }
           }
-          if (this.departmentPossibilities.length === 0) {
-            // have not found department yet
-            // then set the words equal to course name
-          }
+        }
+        for (let m of localPossibilities) {
+          this.departmentPossibilities.push(m);
+        }
+        if (this.departmentPossibilities.length > 1) {
+          this.department = x;
+        }
+        if (this.departmentPossibilities.length === 1) {
+          this.department = this.departmentPossibilities[0];
+        }
+        // console.log('hi');
+        // console.log(this.departmentPossibilities);
+        // console.log(localPossibilities);
+        if (this.departmentPossibilities.length === 0 && this.department === '') {
+          // have not found department yet
+          // then set the words equal to course name
+          this.courseName = x;
+          console.log('course name is : ' +  this.courseName);
         }
       }
     }
     this.callAPI();
   }
   callAPI() {
-    // create search service
+    console.log('department posibilities: ' + this.departmentPossibilities);
+    console.log('department: ' + this.department);
+    console.log('courseName: ' + name);
+    console.log('courseNumber: ' + this.courseNumber);
+    // TODO: fix the next part
+    if (this.courseNumber === undefined && this.department !== '') {
+      this.searchService.getDepartment(this.department)
+        .subscribe((data: Array<object>) => {
+          const obj: MyObj = JSON.parse(JSON.stringify(data));
+          for (const i of obj.results) {
+            const course: Course = JSON.parse(JSON.stringify(i));
+            this.resultsList.push(course);
+            console.log(course);
+          }
+          this.resultsList = this.resultsList.sort((a, b) => {
+            if (a.course_number > b.course_number) {
+              return 1;
+            } else if (a.course_number < b.course_number) {
+              return -1;
+            } else {
+              return 0;
+            }
+          });
+          console.log(this.resultsList.length);
+          // do something with this data
+          // console.log(data);
+        });
+    } else if (this.courseNumber !== undefined && this.department !== '') {
+      this.searchService.getDepartmentAndNumber(this.department, this.courseNumber)
+        .subscribe((data: Array<object>) => {
+          // do something with this data
+          const obj: MyObj = JSON.parse(JSON.stringify(data));
+          for (const i of obj.results) {
+            const course: Course = JSON.parse(JSON.stringify(i));
+            this.resultsList.push(course);
+            console.log(course);
+          }
+          console.log(this.resultsList.length);
+          console.log('with number');
+          console.log(this.courseNumber);
+          console.log(data);
+        });
+    }
+    if (this.courseName !== '' && this.courseNumber === undefined && this.department === '') {
+      this.searchService.getCourseName(this.courseName)
+        .subscribe((data: Array<object>) => {
+          // do something with this data
+          const obj: MyObj = JSON.parse(JSON.stringify(data));
+          for (const i of obj.results) {
+            const course: Course = JSON.parse(JSON.stringify(i));
+            this.resultsList.push(course);
+            console.log(course);
+          }
+          console.log(this.resultsList.length);
+          console.log('with number');
+          console.log(this.courseNumber);
+          console.log(data);
+        });
+    }
     // loop through this.departmentPossibilities
       // if course number if blank, search just for departments
       // if course number != blank, search for department and course
@@ -175,4 +258,11 @@ export class SearchComponent implements OnInit {
   }
   // add filters to search!!
   // then add to the search service to be able to filter for these things
+}
+
+interface MyObj {
+  count: number;
+  next: string;
+  previous: string;
+  results: Array<string>;
 }
