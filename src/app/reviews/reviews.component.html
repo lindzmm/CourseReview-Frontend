@@ -44,7 +44,9 @@
 <ul class="reviews">
   <div *ngIf="reviewList.length > 0">
     <li *ngFor="let review of reviewList">
-      <p> Rating: {{review.rating}}<br> Review: {{review.review_text}}</p>
+      <p> Difficulty Rating: {{review.difficulty_rating}}<br> Interest Rating: {{review.interest_rating}}
+        <br> Review: {{review.review_text}}<br> Tips for Success: {{review.success_tips_text}}
+        <br> Professor: {{review.professor}}<br> Date: {{review.date_posted}}</p>
     </li>
   </div>
   <p *ngIf="reviewList.length < 1"> There are no reviews yet </p>

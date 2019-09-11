@@ -16,64 +16,64 @@
             <div class="form-group">
               <label>Level:</label>
               <div class="checkbox">
-                <label><input type="checkbox" value="Elementary">Elementary</label>
+                <label><input type="checkbox" value="Elementary" name="Elementary" id="Elementary">Elementary</label>
               </div>
               <div class="checkbox">
-                <label><input type="checkbox" value="Intermediate">Intermediate</label>
+                <label><input type="checkbox" value="Intermediate" name="Intermediate" id="Intermediate">Intermediate</label>
               </div>
               <div class="checkbox">
-                <label><input type="checkbox" value="Advanced">Advanced</label>
+                <label><input type="checkbox" value="Advanced" name="Advanced" id="Advanced">Advanced</label>
               </div>
             </div>
             <div class="form-group">
               <label>Gen Ed:</label>
               <div class="checkbox">
-                <label><input type="checkbox" value="ComA">Com A</label>
+                <label><input type="checkbox" value="ComA" name="ComA" id="ComA">Com A</label>
               </div>
               <div class="checkbox">
-                <label><input type="checkbox" value="ComB">Com B</label>
+                <label><input type="checkbox" value="ComB" name="ComB" id="ComB">Com B</label>
               </div>
               <div class="checkbox">
-                <label><input type="checkbox" value="QRA">QR A</label>
+                <label><input type="checkbox" value="QRA" name="QRA" id="QRA">QR A</label>
               </div>
               <div class="checkbox">
-                <label><input type="checkbox" value="QRB">QR B</label>
+                <label><input type="checkbox" value="QRB" name="QRB" id="QRB">QR B</label>
               </div>
             </div>
             <div class="form-group">
               <label>Ethnic Studies:</label>
               <div class="checkbox">
-                <label><input type="checkbox" value="EthnicStudies">Ethnic Studies</label>
+                <label><input type="checkbox" value="EthnicStudies" name="EthnicStrudies" id="EthnicStudies">Ethnic Studies</label>
               </div>
             </div>
             <div class="form-group">
               <label>Breadth:</label>
               <div class="checkbox">
-                <label><input type="checkbox" value="Biological">Biological Science</label>
+                <label><input type="checkbox" value="Biological" name="Biological" id="Biological">Biological Science</label>
               </div><div class="checkbox">
-                <label><input type="checkbox" value="Humanities">Humanities</label>
+                <label><input type="checkbox" value="Humanities" name="Humanities" id="Humanities">Humanities</label>
               </div><div class="checkbox">
-                <label><input type="checkbox" value="Literature">Literature</label>
+                <label><input type="checkbox" value="Literature" name="Literature" id="Literature">Literature</label>
               </div><div class="checkbox">
-                <label><input type="checkbox" value="Natural">Natural Science</label>
+                <label><input type="checkbox" value="Natural" name="Natural" id="Natural">Natural Science</label>
               </div><div class="checkbox">
-                <label><input type="checkbox" value="Physical">Physical Science</label>
+                <label><input type="checkbox" value="Physical" name="Physical" id="Physical">Physical Science</label>
               </div><div class="checkbox">
-                <label><input type="checkbox" value="Social">Social Science</label>
+                <label><input type="checkbox" value="Social" name="Social" id="Social">Social Science</label>
               </div>
             </div>
             <div class="form-group">
               <label>Typically Offered:</label>
               <div class="checkbox">
-                <label><input type="checkbox" value="Fall">Fall</label>
+                <label><input type="checkbox" value="Fall" name="Fall" id="Fall">Fall</label>
               </div>
               <div class="checkbox">
-                <label><input type="checkbox" value="Spring">Spring</label>
+                <label><input type="checkbox" value="Spring" name="Spring" id="Spring">Spring</label>
               </div>
               <div class="checkbox">
-                <label><input type="checkbox" value="Summer">Summer</label>
+                <label><input type="checkbox" value="Summer" name="Summer" id="Summer">Summer</label>
               </div>
-              <button type="submit" class="btn btn-primary btn-block">Search<span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+              <button type="submit" [routerLink]="['/search/checked/']" class="btn btn-primary btn-block" (click)="onSelectSearch()">Search<span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
             </div>
           </form>
         </div>

@@ -70,13 +70,16 @@ export class ReviewsComponent implements OnInit {
       const review: Review = JSON.parse(this.responseArray);
       console.log(review.course);
       console.log(review.review_text);
-      console.log(review.rating);
+      console.log(review.difficulty_rating);
+      console.log(review.interest_rating);
+      console.log(review.professor);
+      console.log(review.success_tips_text);
       this.reviewList.push(review);
     });
   }
   getDepartment(): void {
     this.departmentService
-      .getMadGradesData('https://api.madgrades.com/v1/courses/' + this.uuid, '1b1c72ca7fe54e0cb959f2a8b0d718f6')
+      .getMadGradesData('https://api.madgrades.com/v1/courses/' + this.uuid, '78218a4c7b7b49a6be7597692fca996f')
       .subscribe((data: Array<object>) => {
         const mgCourse: MadGradeCourse = JSON.parse(JSON.stringify(data));
         this.getGrades(mgCourse);
@@ -92,11 +95,12 @@ export class ReviewsComponent implements OnInit {
   getGrades(course: MadGradeCourse) {
     const gradesURL: string = course.gradesUrl;
     this.departmentService
-      .getMadGradesData(gradesURL, '1b1c72ca7fe54e0cb959f2a8b0d718f6')
+      .getMadGradesData(gradesURL, '78218a4c7b7b49a6be7597692fca996f')
       .subscribe((data: Array<object>) => {
         this.grade = JSON.parse(JSON.stringify(data));
         this.cumulative = JSON.parse(JSON.stringify(this.grade.cumulative));
         this.computeGPA();
+        console.log('got this far!');
       });
   }
   computeGPA() {

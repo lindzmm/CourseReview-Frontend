@@ -17,4 +17,7 @@ export class SearchService {
   getCourseName(name) {
     return this.httpClient.get(`${this.API_URL}` + '?course_name=' + `${name}`);
   }
+  getCheckedSearch(url) {
+    return this.httpClient.get(`${this.API_URL}` + `${url}`);
+  }
 }

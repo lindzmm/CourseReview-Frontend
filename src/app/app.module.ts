@@ -15,6 +15,7 @@ import {FormsModule} from '@angular/forms';
 import { AddReviewComponent } from './add-review/add-review.component';
 import { DepartmentComponent } from './department/department.component';
 import { SearchComponent } from './search/search.component';
+import { SelectedSearchComponent } from './selected-search/selected-search.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { SearchComponent } from './search/search.component';
     AddCourseComponent,
     AddReviewComponent,
     DepartmentComponent,
-    SearchComponent
+    SearchComponent,
+    SelectedSearchComponent
   ],
   imports: [
     BrowserModule,
