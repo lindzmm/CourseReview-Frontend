@@ -14,10 +14,25 @@
   <span>Level: {{course.level}}</span><br>
   <span *ngIf="course.lasCredit==true">L&S Credit: {{course.lasCredit}}<br></span>
   <span>Typically Offered: </span><span *ngFor="let typical of course.typicallyOffered">{{typical}} </span><span *ngIf="course.typicallyOffered.length > 0"><br></span>
+  <form>
+    <fieldset>
+      <span><b>Filter grades by Professor</b></span>
+      <p>
+        <label>Select Professor</label>
+        <select name="professor" id="professor" [(ngModel)]="selectedProfessor" (change)="selected()">
+          <option *ngFor="let professor of instructorList">{{professor}}</option>
+        </select>
+      </p>
+    </fieldset>
+  </form>
+  <span>You have selected {{selectedProfessor}}</span>
 </div>
 <div>
   <h5>Cumulative Grades</h5>
-  <h6>Average GPA: {{averageGPA}}</h6>
+  <h6 *ngIf="selectedProfessor === undefined; else selectedProfGPA">Average GPA: {{averageGPA}}</h6>
+  <ng-template #selectedProfGPA>
+    <h6> Average GPA: {{selectedProfAvgGPA}}</h6>
+  </ng-template>
   <table>
     <tr>
       <th>Total</th>
@@ -29,7 +44,7 @@
       <th>D count</th>
       <th>F count</th>
     </tr>
-    <tr>
+    <tr *ngIf="selectedProfessor === undefined; else selectedProf">
       <td>{{cumulative.total}}</td>
       <td>{{cumulative.aCount}}</td>
       <td>{{cumulative.abCount}}</td>
@@ -39,7 +54,24 @@
       <td>{{cumulative.dCount}}</td>
       <td>{{cumulative.fCount}}</td>
     </tr>
+    <ng-template #selectedProf>
+      <tr>
+        <td>{{selectedProfTotal}}</td>
+        <td>{{selectedProfA}}</td>
+        <td>{{selectedProfAB}}</td>
+        <td>{{selectedProfB}}</td>
+        <td>{{selectedProfBC}}</td>
+        <td>{{selectedProfC}}</td>
+        <td>{{selectedProfD}}</td>
+        <td>{{selectedProfF}}</td>
+      </tr>
+    </ng-template>
   </table>
+</div>
+<div>
+  <h5>Reviews</h5>
+  <h6>Average Difficulty Rating: {{averageDifficultyRating / reviewList.length}}</h6>
+  <h6>Average Interest Rating: {{averageInterestRating / reviewList.length}}</h6>
 </div>
 <ul class="reviews">
   <div *ngIf="reviewList.length > 0">
@@ -47,6 +79,7 @@
       <p> Difficulty Rating: {{review.difficulty_rating}}<br> Interest Rating: {{review.interest_rating}}
         <br> Review: {{review.review_text}}<br> Tips for Success: {{review.success_tips_text}}
         <br> Professor: {{review.professor}}<br> Date: {{review.date_posted}}</p>
+      <hr>
     </li>
   </div>
   <p *ngIf="reviewList.length < 1"> There are no reviews yet </p>
