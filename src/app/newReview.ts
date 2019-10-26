@@ -1,5 +1,9 @@
 export class NewReview {
   course: string;
   review_text: string;
-  rating: number;
+  difficulty_rating: number;
+  interest_rating: number;
+  success_tips_text: string;
+  date_posted: string;
+  professor: string;
 }

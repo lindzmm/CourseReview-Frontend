@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import {AppComponent} from './app.component';
 import {DepartmentComponent} from './department/department.component';
 import {SearchComponent} from './search/search.component';
+import {SelectedSearchComponent} from './selected-search/selected-search.component';
 
 const routes: Routes = [
   {
@@ -27,6 +28,10 @@ const routes: Routes = [
   {
     path: 'search/:id',
     component: SearchComponent
+  },
+  {
+    path: 'search/checked/:id',
+    component: SelectedSearchComponent
   },
   {
     path: '',

@@ -42,12 +42,12 @@ export class CoursesComponent implements OnInit {
     // this.fetchDepartment();
   }
   fetchCourse(): void {
-    this.courseService.getMadGradesCourses(1, this.courseCode, '1b1c72ca7fe54e0cb959f2a8b0d718f6')
+    this.courseService.getMadGradesCourses(1, this.courseCode, '78218a4c7b7b49a6be7597692fca996f')
       .subscribe((data: Array<object>) => {
         this.createCourse(data);
         this.curr = 2;
         while (this.curr <= this.pageNum) {
-          this.courseService.getMadGradesCourses(this.curr, this.courseCode, '1b1c72ca7fe54e0cb959f2a8b0d718f6')
+          this.courseService.getMadGradesCourses(this.curr, this.courseCode, '78218a4c7b7b49a6be7597692fca996f')
             .subscribe((newdata: Array<object>) => {
               this.createCourse(newdata);
             });
