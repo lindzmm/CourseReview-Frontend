@@ -20,6 +20,7 @@
       <p>
         <label>Select Professor</label>
         <select name="professor" id="professor" [(ngModel)]="selectedProfessor" (change)="selected()">
+          <option>All professors</option>
           <option *ngFor="let professor of instructorList">{{professor}}</option>
         </select>
       </p>
@@ -70,10 +71,10 @@
 </div>
 <div>
   <h5>Reviews</h5>
-  <h6 *ngIf="selectedProfessor === undefined">Average Difficulty Rating: {{averageDifficultyRating / reviewList.length}}</h6>
-  <h6 *ngIf="selectedProfessor !== undefined">Average Difficulty Rating: {{selectedDifficultyRating / selectedReviewList.length}}</h6>
-  <h6 *ngIf="selectedProfessor === undefined">Average Interest Rating: {{averageInterestRating / reviewList.length}}</h6>
-  <h6 *ngIf="selectedProfessor !== undefined">Average Interest Rating: {{selectedInterestRating / selectedReviewList.length}}</h6>
+  <h6 *ngIf="selectedProfessor === undefined && reviewList.length > 0">Average Difficulty Rating: {{(averageDifficultyRating / reviewList.length) | number:'1.0-2'}}</h6>
+  <h6 *ngIf="selectedProfessor !== undefined && selectedReviewList.length > 0">Average Difficulty Rating: {{(selectedDifficultyRating / selectedReviewList.length) | number:'1.0-2'}}</h6>
+  <h6 *ngIf="selectedProfessor === undefined && reviewList.length > 0">Average Interest Rating: {{(averageInterestRating / reviewList.length) | number:'1.0-2'}}</h6>
+  <h6 *ngIf="selectedProfessor !== undefined && selectedReviewList.length > 0">Average Interest Rating: {{(selectedInterestRating / selectedReviewList.length) | number:'1.0-2'}}</h6>
 </div>
 <ul class="reviews">
   <div *ngIf="reviewList.length > 0 && selectedProfessor === undefined">

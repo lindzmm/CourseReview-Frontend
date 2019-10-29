@@ -185,6 +185,9 @@ export class ReviewsComponent implements OnInit {
     }
   }
   selected() {
+    if (this.selectedProfessor === 'All professors') {
+      this.selectedProfessor = undefined;
+    }
     this.selectedProfTotal = 0;
     this.selectedProfA = 0;
     this.selectedProfAB = 0;
