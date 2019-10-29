@@ -20,6 +20,7 @@
       <p>
         <label>Select Professor</label>
         <select name="professor" id="professor" [(ngModel)]="selectedProfessor" (change)="selected()">
+          <option>All professors</option>
           <option *ngFor="let professor of instructorList">{{professor}}</option>
         </select>
       </p>
