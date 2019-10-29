@@ -35,7 +35,9 @@
     <div class="form-group">
       <label class="control-label">Professor</label>
       <div>
-        <input class="form-control input-lg" ngModel id="professor" name="professor">
+        <select name="professor" id="professor" [(ngModel)]="selectedProfessor" (change)="selected()">
+          <option *ngFor="let professor of instructorList">{{professor}}</option>
+        </select>
       </div>
     </div>
   </form>

@@ -7,6 +7,7 @@ import {ReviewService} from '../services/review.service';
 import {ActivatedRoute} from '@angular/router';
 import { Course } from '../course';
 import {DatePipe, getLocaleDateTimeFormat} from '@angular/common';
+import {MadGradeCourse} from '../madgradesCourse';
 
 
 @Component({
@@ -25,6 +26,8 @@ export class AddReviewComponent implements OnInit {
   courseURL: string;
   review: NewReview;
   public courseId: string;
+  public instructorList = new Array<string>();
+  selectedProfessor: string;
 
   pipe = new DatePipe('en-US');
 
@@ -35,14 +38,15 @@ export class AddReviewComponent implements OnInit {
 
   ngOnInit() {
   }
-
-
+  selected() {
+    console.log(this.selectedProfessor);
+  }
   onSubmit(form: NgForm) {
     this.difficultyRating = form.value.difficultyRating;
     this.interestRating = form.value.interestRating;
     this.reviewText = form.value.review_text;
     this.tipsForSuccess = form.value.tipsForSuccess;
-    this.professor = form.value.professor;
+    this.professor = this.selectedProfessor;
     this.courseURL = 'http://localhost:8000/api/course/' + this.courseId;
     const year = Date.now();
     const myFormattedYear = this.pipe.transform(year, 'yyyy');

@@ -70,11 +70,13 @@
 </div>
 <div>
   <h5>Reviews</h5>
-  <h6>Average Difficulty Rating: {{averageDifficultyRating / reviewList.length}}</h6>
-  <h6>Average Interest Rating: {{averageInterestRating / reviewList.length}}</h6>
+  <h6 *ngIf="selectedProfessor === undefined">Average Difficulty Rating: {{averageDifficultyRating / reviewList.length}}</h6>
+  <h6 *ngIf="selectedProfessor !== undefined">Average Difficulty Rating: {{selectedDifficultyRating / selectedReviewList.length}}</h6>
+  <h6 *ngIf="selectedProfessor === undefined">Average Interest Rating: {{averageInterestRating / reviewList.length}}</h6>
+  <h6 *ngIf="selectedProfessor !== undefined">Average Interest Rating: {{selectedInterestRating / selectedReviewList.length}}</h6>
 </div>
 <ul class="reviews">
-  <div *ngIf="reviewList.length > 0">
+  <div *ngIf="reviewList.length > 0 && selectedProfessor === undefined">
     <li *ngFor="let review of reviewList">
       <p> Difficulty Rating: {{review.difficulty_rating}}<br> Interest Rating: {{review.interest_rating}}
         <br> Review: {{review.review_text}}<br> Tips for Success: {{review.success_tips_text}}
@@ -83,6 +85,15 @@
     </li>
   </div>
   <p *ngIf="reviewList.length < 1"> There are no reviews yet </p>
+  <p *ngIf="reviewList.length > 0 && selectedReviewList.length < 1"> There are no reviews yet for this professor </p>
+  <div *ngIf="reviewList.length > 0 && selectedProfessor !== undefined">
+    <li *ngFor="let review of selectedReviewList">
+      <p> Difficulty Rating: {{review.difficulty_rating}}<br> Interest Rating: {{review.interest_rating}}
+        <br> Review: {{review.review_text}}<br> Tips for Success: {{review.success_tips_text}}
+        <br> Professor: {{review.professor}}<br> Date: {{review.date_posted}}</p>
+      <hr>
+    </li>
+  </div>
 </ul>
 <button type="button" class="btn btn-med btn-outline-primary" (click)="onButtonClick()">Add a new review</button>
 </html>
