@@ -45,6 +45,9 @@ export class ReviewsComponent implements OnInit {
   selectedProfD: number;
   selectedProfF: number;
   selectedProfAvgGPA: number;
+  selectedReviewList = new Array<Review>();
+  selectedDifficultyRating: number;
+  selectedInterestRating: number;
 
   constructor(private reviewService: ReviewService,
               private courseService: CourseService,
@@ -171,6 +174,16 @@ export class ReviewsComponent implements OnInit {
         console.log(this.instructorList);
       });
   }
+  computeAveragesSelected() {
+    let i = 0;
+    this.selectedDifficultyRating = 0;
+    this.selectedInterestRating = 0;
+    while (i < this.selectedReviewList.length) {
+      this.selectedDifficultyRating += this.selectedReviewList[i].difficulty_rating;
+      this.selectedInterestRating += this.selectedReviewList[i].interest_rating;
+      i++;
+    }
+  }
   selected() {
     this.selectedProfTotal = 0;
     this.selectedProfA = 0;
@@ -226,10 +239,19 @@ export class ReviewsComponent implements OnInit {
         // this.computeGPA();
         // console.log('got this far!');
       });
+    let i = 0;
+    while (i < this.reviewList.length) {
+      if (this.reviewList[i].professor === this.selectedProfessor) {
+        this.selectedReviewList.push(this.reviewList[i]);
+      }
+      i++;
+    }
+    this.computeAveragesSelected();
   }
   onButtonClick(): void {
     const modalRef = this.modalService.open(AddReviewComponent);
     (modalRef.componentInstance).courseId = this.uuid;
+    (modalRef.componentInstance).instructorList = this.instructorList;
     modalRef.result.then((result) => {
       console.log(result);
       this.courseService.newDataAdded.emit('new data added successfully');
